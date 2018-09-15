@@ -91,11 +91,7 @@ public class SearchFragment extends Fragment {
 
                             Hero1 hero1=hero.getHero();
 
-
                             ArrayList<Image> img1=hero1.getImg();
-
-
-                            //Toast.makeText(MainActivity.this, ""+img1.get(0).getIsfriend()+" ", Toast.LENGTH_SHORT).show();
 
                             adapter = new CustomAdaptor(This, img1);
                             recyclerView.setAdapter(adapter);
