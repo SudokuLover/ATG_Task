@@ -12,10 +12,12 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    Bundle tempBundle;
     public static int k=0;
     FragmentManager fm;
     FragmentTransaction ft;
     public static final String TAG="main";
+    MenuItem  item1;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    item1=item;
                     switchToFragment1();
                     Log.d(TAG,"navigation home");
                     return true;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tempBundle=savedInstanceState;
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -60,13 +64,27 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
     public void switchToFragment1() {
+        k=0;
         ft=fm.beginTransaction();
+        getFragmentManager().popBackStack();
         ft.replace(R.id.content, new HomeFragment()).commit();
     }
     public void switchToFragment2() {
         k=1;
         ft=fm.beginTransaction();
-        ft.replace(R.id.content, new SearchFragment()).commit();
+        ft.replace(R.id.content, new SearchFragment()).addToBackStack( "tag" ).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        k=0;
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+            mOnNavigationItemSelectedListener.onNavigationItemSelected(item1);
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 
 }
