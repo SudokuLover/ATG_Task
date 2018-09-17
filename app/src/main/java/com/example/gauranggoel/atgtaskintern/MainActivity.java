@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                   if(k!=0)
+                    item1=item;
+                    if(k!=0)
                    {
-                       item1=item;
                        switchToFragment1();
                    }
                     Log.d(TAG,"navigation home");
@@ -71,8 +72,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void switchToFragment1() {
         k=0;
+        getSupportFragmentManager().popBackStack();
+        //getFragmentManager().popBackStack();
         ft=fm.beginTransaction();
-        getFragmentManager().popBackStack();
         ft.replace(R.id.content, new HomeFragment()).commit();
     }
     public void switchToFragment2() {
@@ -84,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         k=0;
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-            item1.setEnabled(true);
-            mOnNavigationItemSelectedListener.onNavigationItemSelected(item1);
-        }
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            View view =findViewById(R.id.navigation_home);
+            view.performClick();
+          }
         else{
             super.onBackPressed();
         }
