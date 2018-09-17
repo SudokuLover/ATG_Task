@@ -26,12 +26,18 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    item1=item;
-                    switchToFragment1();
+                   if(k!=0)
+                   {
+                       item1=item;
+                       switchToFragment1();
+                   }
                     Log.d(TAG,"navigation home");
                     return true;
                 case R.id.navigation_dashboard:
-                    switchToFragment2();
+                    if(k==0)
+                    {
+                        switchToFragment2();
+                    }
                     Log.d(TAG,"navigation search");
                     return true;
                /* case R.id.navigation_notifications:
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         k=0;
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
+            item1.setEnabled(true);
             mOnNavigationItemSelectedListener.onNavigationItemSelected(item1);
         }
         else{
